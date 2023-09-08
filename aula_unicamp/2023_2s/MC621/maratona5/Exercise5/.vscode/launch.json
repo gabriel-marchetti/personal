@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [
+        "<",
+        "test1.txt"
+      ],
+      "stopAtEntry": false,
+      "externalConsole": false,
+      "cwd": "/home/gabriel/codes/aulasUnicamp/2023_2s/MC621/maratona5/Exercise5",
+      "program": "/home/gabriel/codes/aulasUnicamp/2023_2s/MC621/maratona5/Exercise5/problem",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}
