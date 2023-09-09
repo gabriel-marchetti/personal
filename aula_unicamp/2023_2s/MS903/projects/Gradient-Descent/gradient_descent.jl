@@ -122,33 +122,62 @@ x_result_1_Rosen, iter_1_Rosen = gradient_descent(α, σ, ϵ, M, x, GRAD_ROSENBR
 
 println("Optimal Point: $x_result_1_Rosen and Iterations: $iter_1_Rosen");
 
-f(x, y) = ( 3*x + y*y ) * abs( sin(x) + cos(y) )
+f(x, y) = ( 3*x + y*y ) * abs( sin(x) + cos(y) );
 
-x = range(0, 5, length = 100);
-y = range(0, 3, length = 100);
-z = @. f(x', y)
+x = range(-5, 5, length = 100);
+y = range(-5, 5, length = 100);
+z = @. f(x', y);
+z
 
-contour(x, y, z);
+contour(x, y, z)
 
-R = hcat(x, y)
-x_range = range(start=-2, stop=2, length=100);
-y_range = range(start=-2, stop=2, length=100);
+# R = hcat(x, y)
+x_range = range(start=-10, stop=10, length=1000);
+y_range = range(start=-10, stop=10, length=1000);
 
 # Criar matrizes de combinação de x com y.
-
 dimX = length(x_range);
 dimY = length(y_range);
-points_matrix = Matrix{Point}(undef, dimX, dimY);
+# Useless code... Just for reference.
+# points_matrix = Matrix{Point}(undef, dimX, dimY);
+# values = Matrix{Float64}(undef, dimX, dimY);
 
-struct Point
-    x::Float64;
-    y::Float64;
+# struct Point
+#    x::Float64;
+#    y::Float64;
+# end
+
+# for i = 1:dimX
+#    for j = 1:dimY
+#        x = [convert(Float64, x_range[i]), convert(Float64, y_range[i])];
+#        # display(x);
+#        # display(length(x));
+#        values[i, j] = ROSENBROK(x);
+#    end
+# end
+
+z_values = [ROSENBROK([x, y]) for x in y_range, y in x_range]; 
+contour(x_range, y_range, z_values, levels=20)
+
+#x_points = [x_result_0_Rosen[1], x_result_1_Rosen[1]]
+#y_points = [x_result_0_Rosen[2], x_result_1_Rosen[2]]
+
+#scatter!(x_points, y_points, label="Pontos de mínimo", legend=false)
+
+ponto1 = [x_result_0_Rosen[1], x_result_0_Rosen[2]];
+ponto2 = [x_result_1_Rosen[1], x_result_1_Rosen[2]];
+scatter!([ponto1[1]], [ponto1[2]], label="Ponto de minimo sem passo", legend=true)
+scatter!([ponto2[1]], [ponto2[2]], label="Ponto de minimo com passo", legend=true)
+
+function generate_graphics()
+    x_range = range(start=-10, stop=10, length=1000);
+    y_range = range(start=-6, stop=6, length=1000);
+    z_values = [ROSENBROK([x, y]) for x in y_range, y in x_range]; 
+
+    contour(x_range, y_range, z_values, levels=50)
+    scatter!([ponto1[1]], [ponto1[2]], label="Ponto de minimo sem passo", legend=true)
+    scatter!([ponto2[1]], [ponto2[2]], label="Ponto de minimo com passo", legend=true)
+
 end
 
-for i = 1:dimX
-    for j = 1:dimY
-        points_matrix[i, j] = Point(convert(Float64, x[i]), convert(Float64, y[i]))
-    end
-end
-
-z_range = 
+generate_graphics()
