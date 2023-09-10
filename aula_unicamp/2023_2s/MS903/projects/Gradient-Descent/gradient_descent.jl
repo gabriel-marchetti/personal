@@ -177,7 +177,6 @@ function generate_graphics()
     contour(x_range, y_range, z_values, levels=50)
     scatter!([ponto1[1]], [ponto1[2]], label="Ponto de minimo sem passo", legend=true)
     scatter!([ponto2[1]], [ponto2[2]], label="Ponto de minimo com passo", legend=true)
-
 end
 
 generate_graphics()
