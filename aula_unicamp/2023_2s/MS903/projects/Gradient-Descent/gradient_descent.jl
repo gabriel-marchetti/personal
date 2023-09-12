@@ -20,6 +20,7 @@ function gradient_descent(α::Float64, σ::Float64, ϵ::Float64,
     μ       = infty_norm(g_k);
     x_ant   = 0;
     g_k_ant = 0;
+    f_val   = f(x_k);
 
     while( (μ >= ϵ) && (k < M) )
         λ_k = 1;
@@ -29,7 +30,8 @@ function gradient_descent(α::Float64, σ::Float64, ϵ::Float64,
         end
         #Armijo's condition:
         w   = α * dot(g_k, g_k);
-        while( f(x_k - λ_k * g_k) > f(x_k) - λ_k*w )
+
+        while( f(x_k - λ_k * g_k) > f_val - λ_k*w )
             λ_k = σ * λ_k;
         end
 
@@ -38,6 +40,8 @@ function gradient_descent(α::Float64, σ::Float64, ϵ::Float64,
         x_k     = x_k - λ_k * g_k; 
         g_k     = ∇f(x_k);
         μ       = infty_norm(g_k);
+        f_val   = f(x_k);
+        println(f_val);
         k       = k + 1;
     end
 
@@ -81,9 +85,6 @@ function GRAD_ROSENBROK(x::Vector{Float64})
     G    = zeros(size);
     size = size / 2;
     limits = convert(Int64, size);
-    if (size % 2 == 1)
-        println("Invalid Rosenbrok.");
-    end
 
     
     for i = 1:limits
@@ -100,7 +101,7 @@ end
 σ = 0.5;
 ϵ = 1e-5;
 M = 1000;
-x = [-4.0; 9.0; 2.0; 4.0];
+x = [-1.0; 3.0];
 
 println("-----------QUADRATICA-----------")
 
@@ -127,7 +128,6 @@ f(x, y) = ( 3*x + y*y ) * abs( sin(x) + cos(y) );
 x = range(-5, 5, length = 100);
 y = range(-5, 5, length = 100);
 z = @. f(x', y);
-z
 
 contour(x, y, z)
 
@@ -180,3 +180,62 @@ function generate_graphics()
 end
 
 generate_graphics()
+
+function my_max(v::Vector{Float64})
+    max = v[1];
+    for i = 1:length(v)
+        if( v[i] > max)
+            max = v[i];
+        end
+    end
+
+    return max;
+end
+
+function gradient_descent_p_infos(α::Float64, σ::Float64, ϵ::Float64,
+    M::Int64, x_k::Vector{Float64}, ∇f::Function, f::Function, p::Int64, flag)
+    k       = 0;
+    g_k     = ∇f(x_k);
+    μ       = infty_norm(g_k);
+    x_ant   = 0;
+    g_k_ant = 0;
+    # Create p-array:
+    array       = fill(f(x_k), p);
+    array_pos   = 1;
+
+    while( (μ >= ϵ) && (k < M) )
+        λ_k = 1;
+
+        if ( flag == 1 && k != 0)
+            λ_k = norm(x_k - x_ant, 2) / norm(g_k - g_k_ant, 2);
+        end
+        #Armijo's condition:
+        w   = α * dot(g_k, g_k);
+        while( f(x_k - λ_k * g_k) > my_max(array) - λ_k*w )
+            λ_k = σ * λ_k;
+        end
+
+        # Static-Array Implementation.
+        array_pos += 1;
+        array_pos = array_pos % p;
+        # Problem with julia indexing, bc of mod operation. Can return 0, but index starts at 1.
+        if (array_pos == 0)
+            array_pos = 1;
+        end
+        array[array_pos] = f(x_k);
+
+        x_ant   = x_k;
+        g_k_ant = g_k;
+        x_k     = x_k - λ_k * g_k; 
+        g_k     = ∇f(x_k);
+        μ       = infty_norm(g_k);
+        k       = k + 1;
+    end
+
+    return x_k, k;
+end
+
+x = [9.0, 8.0, -7.0, -3.0]
+println("Modificado: ");
+x_modificado, iter_modificado = gradient_descent_p_infos(α, σ, ϵ, M, x, GRAD_ROSENBROK, ROSENBROK, 2, 1);
+println("Optimal Point: $x_modificado and Iterations: $iter_modificado");

@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/gabriel/codes/aulasUnicamp/2023_2s/MS903/projects/Gradient-Descent",
-      "program": "/home/gabriel/codes/aulasUnicamp/2023_2s/MS903/projects/Gradient-Descent/build/Debug/outDebug",
+      "cwd": "/home/gabriel/checkpoint/aula_unicamp/2023_2s/MS903/projects/Gradient-Descent",
+      "program": "/home/gabriel/checkpoint/aula_unicamp/2023_2s/MS903/projects/Gradient-Descent/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
