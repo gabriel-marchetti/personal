@@ -13,14 +13,14 @@ function infty_norm(x)
     return max;
 end
 
-function gradient_descent(α::Float64, σ::Float64, ϵ::Float64,
+function gradient_descent(a::Float64, s::Float64, ϵ::Float64,
                           M::Int64, x_k::Vector{Float64}, ∇f::Function, f::Function, flag)
     k       = 0;
     g_k     = ∇f(x_k);
     μ       = infty_norm(g_k);
+    f_val   = f(x_k);
     x_ant   = 0;
     g_k_ant = 0;
-    f_val   = f(x_k);
 
     while( (μ >= ϵ) && (k < M) )
         λ_k = 1;
@@ -29,10 +29,10 @@ function gradient_descent(α::Float64, σ::Float64, ϵ::Float64,
             λ_k = norm(x_k - x_ant, 2) / norm(g_k - g_k_ant, 2);
         end
         #Armijo's condition:
-        w   = α * dot(g_k, g_k);
+        w   = a * dot(g_k, g_k);
 
         while( f(x_k - λ_k * g_k) > f_val - λ_k*w )
-            λ_k = σ * λ_k;
+            λ_k = s * λ_k;
         end
 
         x_ant   = x_k;
@@ -41,7 +41,7 @@ function gradient_descent(α::Float64, σ::Float64, ϵ::Float64,
         g_k     = ∇f(x_k);
         μ       = infty_norm(g_k);
         f_val   = f(x_k);
-        println(f_val);
+        #println(f_val);
         k       = k + 1;
     end
 
@@ -74,7 +74,9 @@ function ROSENBROK(x::Vector{Float64})
     size    = size / 2;
     limits  = convert(Int64, size);
     for i = 1:limits
-        f += 10*(x[2*i] - x[2*i-1]^2)^2 + ( x[2*i-1] - 1 )^2;
+        x_p = x[2*i];
+        x_i = x[2*i - 1];
+        f += 10*(x_p - x_i * x_i)*(x_p - x_i * x_i) + ( x_i - 1 )*( x_i - 1 );
     end
 
     return f;
@@ -90,36 +92,36 @@ function GRAD_ROSENBROK(x::Vector{Float64})
     for i = 1:limits
         x_i = x[2*i-1];
         x_p = x[2*i];
-        G[2*i] = -20.0*( x_i * x_i - x_p );
+        G[2*i] = 20.0*( x_p - x_i * x_i  );
         G[2*i - 1] = 40.0*( x_i*x_i - x_p )*x_i + 2.0*( x_i - 1 );    
     end
 
     return G;
 end
 
-α = 10e-4;
-σ = 0.5;
+a = 10e-4;
+s = 0.5;
 ϵ = 1e-5;
 M = 1000;
 x = [-1.0; 3.0];
 
 println("-----------QUADRATICA-----------")
 
-x_result_0, iter_0 = gradient_descent(α, σ, ϵ, M, x, grad_quad, quad, 0);
+x_result_0, iter_0 = gradient_descent(a, s, ϵ, M, x, grad_quad, quad, 0);
 
 println("Optimal Point: $x_result_0 and Iterations: $iter_0")
 
-x_result_1, iter_1 = gradient_descent(α, σ, ϵ, M, x, grad_quad, quad, 1);
+x_result_1, iter_1 = gradient_descent(a, s, ϵ, M, x, grad_quad, quad, 1);
 
 println("Optimal Point: $x_result_1 and Iterations: $iter_1");
 
 println("-----------ROSENBROK-----------")
 
-x_result_0_Rosen, iter_0_Rosen = gradient_descent(α, σ, ϵ, M, x, GRAD_ROSENBROK, ROSENBROK, 0);
+x_result_0_Rosen, iter_0_Rosen = gradient_descent(a, s, ϵ, M, x, GRAD_ROSENBROK, ROSENBROK, 0);
 
 println("Optimal Point: $x_result_0_Rosen and Iterations: $iter_0_Rosen");
 
-x_result_1_Rosen, iter_1_Rosen = gradient_descent(α, σ, ϵ, M, x, GRAD_ROSENBROK, ROSENBROK, 1);
+x_result_1_Rosen, iter_1_Rosen = gradient_descent(a, s, ϵ, M, x, GRAD_ROSENBROK, ROSENBROK, 1);
 
 println("Optimal Point: $x_result_1_Rosen and Iterations: $iter_1_Rosen");
 
@@ -169,17 +171,15 @@ ponto2 = [x_result_1_Rosen[1], x_result_1_Rosen[2]];
 scatter!([ponto1[1]], [ponto1[2]], label="Ponto de minimo sem passo", legend=true)
 scatter!([ponto2[1]], [ponto2[2]], label="Ponto de minimo com passo", legend=true)
 
-function generate_graphics()
+function generate_graphics(f::Function)
     x_range = range(start=-10, stop=10, length=1000);
     y_range = range(start=-6, stop=6, length=1000);
-    z_values = [ROSENBROK([x, y]) for x in y_range, y in x_range]; 
+    z_values = [f([x, y]) for x in y_range, y in x_range]; 
 
     contour(x_range, y_range, z_values, levels=50)
-    scatter!([ponto1[1]], [ponto1[2]], label="Ponto de minimo sem passo", legend=true)
-    scatter!([ponto2[1]], [ponto2[2]], label="Ponto de minimo com passo", legend=true)
 end
 
-generate_graphics()
+generate_graphics(ROSENBROK)
 
 function my_max(v::Vector{Float64})
     max = v[1];
@@ -192,7 +192,7 @@ function my_max(v::Vector{Float64})
     return max;
 end
 
-function gradient_descent_p_infos(α::Float64, σ::Float64, ϵ::Float64,
+function gradient_descent_p_infos(a::Float64, s::Float64, ϵ::Float64,
     M::Int64, x_k::Vector{Float64}, ∇f::Function, f::Function, p::Int64, flag)
     k       = 0;
     g_k     = ∇f(x_k);
@@ -210,9 +210,9 @@ function gradient_descent_p_infos(α::Float64, σ::Float64, ϵ::Float64,
             λ_k = norm(x_k - x_ant, 2) / norm(g_k - g_k_ant, 2);
         end
         #Armijo's condition:
-        w   = α * dot(g_k, g_k);
+        w   = a * dot(g_k, g_k);
         while( f(x_k - λ_k * g_k) > my_max(array) - λ_k*w )
-            λ_k = σ * λ_k;
+            λ_k = s * λ_k;
         end
 
         # Static-Array Implementation.
@@ -235,7 +235,7 @@ function gradient_descent_p_infos(α::Float64, σ::Float64, ϵ::Float64,
     return x_k, k;
 end
 
-x = [9.0, 8.0, -7.0, -3.0]
+x = [-1.0, 3.0];
 println("Modificado: ");
-x_modificado, iter_modificado = gradient_descent_p_infos(α, σ, ϵ, M, x, GRAD_ROSENBROK, ROSENBROK, 2, 1);
+x_modificado, iter_modificado = gradient_descent_p_infos(a, s, ϵ, M, x, GRAD_ROSENBROK, ROSENBROK, 2, 1);
 println("Optimal Point: $x_modificado and Iterations: $iter_modificado");
