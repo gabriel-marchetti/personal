@@ -22,16 +22,15 @@ function fun(x::Vector{Float64}, flag::Bool)
         end
         f = f / (2*N);
         ∇f= ∇f ./ N;
+        return f, ∇f;
     else
         for j = 1:N
             Aux = x[1] + x[2] * exp(x[3]*u[j]) - v[j];
             f   = f + Aux*Aux;
         end
         f = f / (2*N);
-        ∇f .= [0.0; 0.0; 0.0];
+        return f;
     end
-
-    return f, ∇f;
 end
 
 function infty_norm(x)
@@ -62,15 +61,16 @@ function gradient_descent(a::Float64, s::Float64, ϵ::Float64,
         end
 
         w = a * dot(∇f, ∇f);
-        while( fun(x - t_k * ∇f, false)[1] > (f - t_k*w) )
+        while( fun(x - t_k * ∇f, false) > (f - t_k*w) )
             t_k = s * t_k;
         end
 
-        x_ant = x;
-        ∇f_ant= ∇f;
-        f, ∇f = fun(x - t_k * ∇f, true);
-        μ     = infty_norm(∇f);
-        k     += 1;
+        x_ant  = x;
+        ∇f_ant = ∇f;
+        x      = x - t_k * ∇f;
+        f, ∇f  = fun(x, true);
+        μ      = infty_norm(∇f);
+        k      += 1;
     end
 
     return x;
