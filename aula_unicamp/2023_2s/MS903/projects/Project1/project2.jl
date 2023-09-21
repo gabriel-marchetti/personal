@@ -1,4 +1,5 @@
 using LinearAlgebra;
+using Plots;
 global u, v, w, N;
 
 file_path = "data_project2.txt";
@@ -33,11 +34,11 @@ function fun(x::Vector{Float64}, flag::Bool)
     ∇f  = zeros(len);
     
     for j = 1:len
-        aux1 = atan(x[1] + x[2]*u[j] - v[j]) + π / 2 * w[j];
+        aux  = x[1] + x[2]*u[j] - v[j];
+        aux1 = atan(aux) + ( π / 2 ) * w[j];
         Σ    = Σ + aux1 * aux1;
         if(flag)
-            aux2  = (x[1] + x[2]*u[j] - v[j]);
-            aux2  = 1 + aux2*aux2;
+            aux2  = 1 + aux*aux;
             ∇f[1] = ∇f[1] + aux1 / aux2;
             ∇f[2] = ∇f[2] + aux1 * u[j] / aux2;
         end
@@ -87,9 +88,25 @@ function main()
     ϵ = 1e-5 ;
     M = 1000 ;
     # INITIAL GUESS
-    x = [1.0; 1.0; 1.0];
+    x = [0.0; 0.0];
     p = gradient_descent(a, s, ϵ, M, x, fun, true);
     println(p);
+    println(fun(p, false)[1]);
+
+    colors = ifelse.(w .== 1, "red", "blue");
+    x_range = range(-11, 11, length=100);
+    #println(p[1]);
+    #println(p[2]);
+    g(k) = p[1] + k*p[2]; 
+    y_range = [g(xp) for xp in x_range];
+    per(k) = 4.1949 - k*1.9783;
+    y_perf_range = [per(k) for k in x_range];
+    #println(y_range);
+    p = plot(x_range, y_range, xlim=(-11,11), ylim=(-11,11), label="Função de escolha");
+    p = plot!(x_range, y_perf_range, xlim=(-11,11), ylim=(-11,11), label="Função de escolha");
+    scatter!(u, v, color=colors, legend=false);
+    xlabel!("u");
+    ylabel!("v");
 
 end
 

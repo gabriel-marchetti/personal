@@ -1,4 +1,5 @@
 using LinearAlgebra;
+using Plots;
 global data, u, v, N;
 
 file_path = "data.txt";
@@ -98,6 +99,15 @@ function main(filepath)
     x = gradient_descent(a, s, ϵ, M, x, fun, true);
     println(x);
 
+    g(u) = x[1] + x[2]*exp(x[3]*u);
+    x_range = range(-2, 2, length=100);
+    println(x_range);
+    y_range = [g(xt) for xt in x_range];
+    println(y_range);
+    p = plot(x_range, y_range, xlabel="x", ylabel="y", label="Função g(u)");
+    scatter!(u, v, label="Testing");
+    
+    return p;
     close(file);
 end
 
