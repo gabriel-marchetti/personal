@@ -29,18 +29,24 @@ function infty_norm(x)
 end
 
 function fun(x::Vector{Float64}, flag::Bool)
-    len = length(x);
     Σ   = 0;
-    ∇f  = zeros(len);
+    ∇f  = zeros(length(x));
+    # println(u[1]);
+    global u
+    global v
+    global w
+    u = convert(Vector{Float64}, u)
+    v = convert(Vector{Float64}, v)
+    w = convert(Vector{Float64}, w)
     
-    for j = 1:len
-        aux  = x[1] + x[2]*u[j] - v[j];
-        aux1 = atan(aux) + ( π / 2 ) * w[j];
-        Σ    = Σ + aux1 * aux1;
+    for j = 1:length(u)
+        aux1 = x[1] + x[2]*u[j] - v[j];
+        aux2 = atan(aux1) + ( π / 2 ) * w[j];
+        Σ    = Σ + aux2 * aux2;
         if(flag)
-            aux2  = 1 + aux*aux;
-            ∇f[1] = ∇f[1] + aux1 / aux2;
-            ∇f[2] = ∇f[2] + aux1 * u[j] / aux2;
+            aux3  = 1 + aux1*aux1;
+            ∇f[1] = ∇f[1] + (aux2 / aux3);
+            ∇f[2] = ∇f[2] + (aux2 * u[j] / aux3);
         end
     end
     ∇f = ∇f .* 2;
@@ -48,35 +54,51 @@ function fun(x::Vector{Float64}, flag::Bool)
     return Σ, ∇f;
 end
 
+function my_function(x)
+    N = length(u)
+    f = 0
+    g = [0.0, 0.0]
+    aux1 = x[1] .+ x[2] .* u .- v
+    aux2 = atan.(aux1) .+ 0.5 * π .* w
+    f = 0.5 * sum(aux2 .* aux2) / N
+    aux3 = aux2 ./ (1 .+ aux1 .* aux1)
+    g[1] = sum(aux3) / N
+    g[2] = sum(aux3 .* u) / N
+    return f, g
+end
+
+
 function gradient_descent(a::Float64, s::Float64, ϵ::Float64,
     M::Int64  , x::Vector{Float64}, fun::Function,
     flag::Bool
     )
     k     = 0; # COUNTER
-    f, ∇f = fun(x, true);
+    f, ∇f = fun(x);
     μ     = infty_norm(∇f);
     x_ant = 0;
     ∇f_ant= 0;
 
     while( (μ >= ϵ) && (k < M) )
-        println("$k");
+        #println("$k");
         t_k = 1;
         if( flag == true && k != 0)
             t_k = norm(x - x_ant, 2) / norm(∇f - ∇f_ant, 2);
         end
 
-        w = a * dot(∇f, ∇f);
-        while( fun(x - t_k * ∇f, false)[1] > (f - t_k*w) )
+        armijo = a * dot(∇f, ∇f);
+        while( fun(x - t_k * ∇f)[1] > (f - t_k*armijo) )
             t_k = s * t_k;
         end
 
         x_ant  = x;
         ∇f_ant = ∇f;
         x      = x - t_k * ∇f;
-        f, ∇f  = fun(x, true);
+        f, ∇f  = my_function(x);
         μ      = infty_norm(∇f);
         k      += 1;
     end
+
+    #println("$k");
     return x;
 end
 
@@ -89,9 +111,9 @@ function main()
     M = 1000 ;
     # INITIAL GUESS
     x = [0.0; 0.0];
-    p = gradient_descent(a, s, ϵ, M, x, fun, true);
+    p = gradient_descent(a, s, ϵ, M, x, my_function, true);
     println(p);
-    println(fun(p, false)[1]);
+    println(fun(p, true)[1]);
 
     colors = ifelse.(w .== 1, "red", "blue");
     x_range = range(-11, 11, length=100);
@@ -99,15 +121,55 @@ function main()
     #println(p[2]);
     g(k) = p[1] + k*p[2]; 
     y_range = [g(xp) for xp in x_range];
-    per(k) = 4.1949 - k*1.9783;
-    y_perf_range = [per(k) for k in x_range];
+    #per(k) = 4.1949 - k*1.9783;
+    #y_perf_range = [per(k) for k in x_range];
     #println(y_range);
     p = plot(x_range, y_range, xlim=(-11,11), ylim=(-11,11), label="Função de escolha");
-    p = plot!(x_range, y_perf_range, xlim=(-11,11), ylim=(-11,11), label="Função de escolha");
+    #p = plot!(x_range, y_perf_range, xlim=(-11,11), ylim=(-11,11), label="Função de escolha");
     scatter!(u, v, color=colors, legend=false);
     xlabel!("u");
     ylabel!("v");
 
 end
+
+function teste(x::Vector{Float64})
+    g(__x__) = x[1] + __x__*x[2]; 
+    x_range = range(-11, 11, length = 100);
+    N       = length(u);
+    y_range = [g(dumb) for dumb in x_range];
+    y_range = []
+    p       = plot(x_range, y_range, xlims=(-11, 11), ylims=(-11, 11))
+    
+    for i = 1:N
+        val = x[1] + x[2]*u[i];
+        expected_color = "\0" ;
+        if( v[i] > val )
+            expected_color = "red";
+        else
+            expected_color = "blue";
+        end
+
+        if( expected_color == "red" && w[i] == 1.0 )
+            resultado = "acertei";
+            p = scatter!( [u[i]], [v[i]] , color=:red);
+        elseif( expected_color == "blue" && w[i] == -1.0 )
+            resultado = "acertei";
+            p = scatter!( [u[i]], [v[i]] , color=:blue);
+        else
+            resultado = "errei";
+            p = scatter!( [u[i]], [v[i]] , marker=:x, color=:green );
+        end
+    end
+
+    return p;
+end
+
+
+teste(x);
+a = 10e-4;
+s = 0.5  ;
+ϵ = 1e-5 ;
+M = 1000 ;
+x = gradient_descent(a, s, ϵ, M, x, my_function, true);
 
 main()
