@@ -1,5 +1,6 @@
 using LinearAlgebra;
 using Plots;
+using Random;
 global u, v, w, N;
 
 file_path = "data_project3.txt";
@@ -18,7 +19,6 @@ function load_info()
 end
 load_info();
 
-
 function infty_norm(x)
     max = 0;
     for i = 1:length(x)
@@ -30,57 +30,51 @@ function infty_norm(x)
     return max;
 end
 
-function my_function(x)
-    N = length(u)
-    f = 0
-    g = [0.0, 0.0]
-    aux1 = x[1] .+ x[2] .* u .- v
-    aux2 = atan.(aux1) .+ 0.5 * π .* w
-    f = 0.5 * sum(aux2 .* aux2) / N
-    aux3 = aux2 ./ (1 .+ aux1 .* aux1)
-    g[1] = sum(aux3) / N
-    g[2] = sum(aux3 .* u) / N
+function my_function_reduzida(x)
+    N = length(u)                             ;
+    f = 0                                     ;
+    g = [0.0; 0.0]                            ;
+    index = floor( rand()*N ) + 1             ;
+    index = convert(Int64, index)             ;
+    aux1  = x[1] + x[2] * u[index] - v[index] ;
+    aux2  = atan(aux1) + 0.5 * π * w[index]   ;
+    f     = ( aux2 * aux2 )                   ;
+    aux3  = aux2 / ( 1 + aux1 * aux1 )        ;
+    g[1]  = aux3                              ;
+    g[2]  = aux3 * u[index]                   ;
+
+    indexes[index] = indexes[index] + 1;
+    println(index);
     return f, g
 end
 
-function gradient_descent(a::Float64, s::Float64, ϵ::Float64,
-    M::Int64  , x::Vector{Float64}, fun::Function,
-    flag::Bool
-    )
-    k     = 0; # COUNTER
-    f, ∇f = fun(x);
-    μ     = infty_norm(∇f);
-    x_ant = 0;
-    ∇f_ant= 0;
+function gradient_descent_stochastic(ϵ::Float64, M::Int64, x::Vector{Float64}, t::Float64)
+    k      = 0; # COUNTER
+    f, ∇f  = my_function_reduzida(x);
+    μ      = infty_norm(∇f);
+    x_ant  = 0;
+    ∇f_ant = 0;
 
     while( (μ >= ϵ) && (k < M) )
-        t_k = 1;
-        if( flag == true && k != 0)
-            t_k = norm(x - x_ant, 2) / norm(∇f - ∇f_ant, 2);
-        end
-
-        armijo = a * dot(∇f, ∇f);
-        while( fun(x - t_k * ∇f)[1] > (f - t_k*armijo) )
-            t_k = s * t_k;
-        end
-
         x_ant  = x;
         ∇f_ant = ∇f;
-        x      = x - t_k * ∇f;
-        f, ∇f  = my_function(x);
+        x      = x - t * ∇f;
+        f, ∇f  = my_function_reduzida(x);
         μ      = infty_norm(∇f);
         k      += 1;
     end
 
+    println("Interations: $k");
     return x;
 end
 
+global indexes = zeros(length(u));
 a = 10e-4;
-s = 0.5  ;
-ϵ = 1e-5 ;
 M = 1000 ;
-x = [0.0; 0.0];
-x = gradient_descent(a, s, ϵ, M, x, my_function, true);
+x = [-5.0; -5.0];
+t = 1.0;
+x = gradient_descent_stochastic(ϵ, M, x, t);
+indexes = convert(Vector{Int64}, indexes);
 
 function teste(x::Vector{Float64})
     g(__x__) = x[1] + __x__*x[2]; 
@@ -121,6 +115,8 @@ function teste(x::Vector{Float64})
 
         error = missed / N;
         error *= 100      ;
+
+        error = round(error, digits = 3);
         title!("Missed points: $error%   Total of Points:$N    Missed:$missed",
                titlefont = font(12,"Computer Modern")
         );

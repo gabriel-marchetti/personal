@@ -171,7 +171,7 @@ function teste(x::Vector{Float64})
 
         error = missed / N;
         error *= 100      ;
-        title!("Missed points: $error%   Total of Points:$N and Missed:$missed",
+        title!("Missed points: $error%   Total of Points:$N    Missed:$missed",
                titlefont = font(12,"Computer Modern")
         );
     end

@@ -43,44 +43,33 @@ function my_function(x)
     return f, g
 end
 
-function gradient_descent(a::Float64, s::Float64, ϵ::Float64,
-    M::Int64  , x::Vector{Float64}, fun::Function,
-    flag::Bool
+function gradient_descent_fixed(ϵ::Float64, M::Int64, 
+    x::Vector{Float64}, fun::Function, t::Float64
     )
     k     = 0; # COUNTER
-    f, ∇f = fun(x);
+    f, ∇f = my_function(x);
     μ     = infty_norm(∇f);
     x_ant = 0;
     ∇f_ant= 0;
 
     while( (μ >= ϵ) && (k < M) )
-        t_k = 1;
-        if( flag == true && k != 0)
-            t_k = norm(x - x_ant, 2) / norm(∇f - ∇f_ant, 2);
-        end
-
-        armijo = a * dot(∇f, ∇f);
-        while( fun(x - t_k * ∇f)[1] > (f - t_k*armijo) )
-            t_k = s * t_k;
-        end
-
         x_ant  = x;
         ∇f_ant = ∇f;
-        x      = x - t_k * ∇f;
+        x      = x - t * ∇f;
         f, ∇f  = my_function(x);
         μ      = infty_norm(∇f);
         k      += 1;
     end
 
+    println("$k");
     return x;
 end
 
 a = 10e-4;
-s = 0.5  ;
-ϵ = 1e-5 ;
 M = 1000 ;
 x = [0.0; 0.0];
-x = gradient_descent(a, s, ϵ, M, x, my_function, true);
+t = 1.0;
+x = gradient_descent_fixed(ϵ, M, x, my_function, t);
 
 function teste(x::Vector{Float64})
     g(__x__) = x[1] + __x__*x[2]; 
@@ -121,6 +110,7 @@ function teste(x::Vector{Float64})
 
         error = missed / N;
         error *= 100      ;
+
         title!("Missed points: $error%   Total of Points:$N    Missed:$missed",
                titlefont = font(12,"Computer Modern")
         );
