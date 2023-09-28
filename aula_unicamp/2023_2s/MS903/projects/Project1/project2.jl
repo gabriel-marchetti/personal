@@ -31,7 +31,6 @@ end
 function fun(x::Vector{Float64}, flag::Bool)
     Σ   = 0;
     ∇f  = zeros(length(x));
-    # println(u[1]);
     global u
     global v
     global w
@@ -131,45 +130,63 @@ function main()
     ylabel!("v");
 
 end
+main()
 
 function teste(x::Vector{Float64})
     g(__x__) = x[1] + __x__*x[2]; 
     x_range = range(-11, 11, length = 100);
     N       = length(u);
     y_range = [g(dumb) for dumb in x_range];
-    y_range = []
-    p       = plot(x_range, y_range, xlims=(-11, 11), ylims=(-11, 11))
+    p       = plot(x_range, y_range, xlims=(-11, 11), ylims=(-11, 11), label=false)
     
+    colors  = ifelse.(w .== 1, "red", "blue");
+    p       = scatter!(u, v, color=colors, label=false);
+    missed   = 0;
+
+    # Check if the prediction is correct!
     for i = 1:N
-        val = x[1] + x[2]*u[i];
-        expected_color = "\0" ;
+        is_under = -1.0;
+        #Check if point is under the curve.
+        val      = x[1] + x[2]*u[i];
         if( v[i] > val )
-            expected_color = "red";
-        else
-            expected_color = "blue";
+            is_under = 1.0;
         end
 
-        if( expected_color == "red" && w[i] == 1.0 )
-            resultado = "acertei";
-            p = scatter!( [u[i]], [v[i]] , color=:red);
-        elseif( expected_color == "blue" && w[i] == -1.0 )
-            resultado = "acertei";
-            p = scatter!( [u[i]], [v[i]] , color=:blue);
-        else
-            resultado = "errei";
-            p = scatter!( [u[i]], [v[i]] , marker=:x, color=:green );
+
+        if(is_under != w[i])
+            # Defining color pallet
+            if( w[i] == 1.0 ) 
+                reversed_color = "blue";
+            else
+                reversed_color = "red" ;
+            end
+        
+            # Scattering
+            scatter!( [u[i]], [v[i]], color=reversed_color,
+                       markershape=:cross, markersize=10, label=false
+            );
+            # Counting missed points
+            missed += 1;
         end
+
+        error = missed / N;
+        error *= 100      ;
+        title!("Missed points: $error%   Total of Points:$N and Missed:$missed",
+               titlefont = font(12,"Computer Modern")
+        );
     end
+    #####################################
 
     return p;
 end
 
+teste(x)
 
-teste(x);
 a = 10e-4;
 s = 0.5  ;
 ϵ = 1e-5 ;
 M = 1000 ;
+x = [0.0; 0.0];
 x = gradient_descent(a, s, ϵ, M, x, my_function, true);
 
 main()
