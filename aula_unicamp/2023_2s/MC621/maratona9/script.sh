@@ -6,5 +6,5 @@ for i in {A..J}; do
 	touch "Exercise$i/test.txt"
 	touch "Exercise$i/makefile"
 	echo "all:" > "Exercise$i/makefile"
-	echo "	g++ std=c++11 -o $i $i.cpp" >> "Exercise$i/makefile"
+	echo "	g++ -std=c++11 -o $i $i.cpp" >> "Exercise$i/makefile"
 done
