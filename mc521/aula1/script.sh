@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for i in {A..J}; do
+for i in {A..L}; do
 	mkdir -p "Exercise$i"
 	touch "Exercise$i/$i.cpp"
 	touch "Exercise$i/test.txt"
