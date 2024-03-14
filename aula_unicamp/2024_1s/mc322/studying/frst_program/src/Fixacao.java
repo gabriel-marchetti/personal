@@ -17,7 +17,10 @@ public class Fixacao{
         System.out.printf(product1 + ": $" + price1 + "\n");
         System.out.printf(product2 + ": $" + price2 + "\n");
 
-        System.out.println("Record");
+        System.out.println("Record: " + age + " years old, code " + code +
+                            " and gender: " + gender);
+        
+        System.out.printf("Measure: %.4f cm\n", measure);
         
 
     }
