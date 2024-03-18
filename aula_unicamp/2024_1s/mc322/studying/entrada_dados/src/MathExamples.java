@@ -25,9 +25,6 @@ public class MathExamples {
         resultado = Math.pow(base, expoente);
         System.out.println("Exponenciacao: " + resultado);
 
-
-
-
         sc.close();
     }
 }
