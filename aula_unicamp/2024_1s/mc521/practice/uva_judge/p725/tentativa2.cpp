@@ -7,10 +7,11 @@ int main(){
     std::vector<int> abcde_store, fghij_store;
     int fghij_copy, abcde_copy, tmp;
     mustBe.set();
+    bool first = true;
 
-    while( true ){
-        scanf("%d", &N);
-        if( N == 0 ) break;
+    while( scanf("%d", &N), N ){
+        if( !first ) printf("\n");
+        first = true;
         abcde_store.clear(); fghij_store.clear();
         for(int fghij{1234}; fghij <= 98765 / N; fghij++){
             alreadyUsed.reset();
