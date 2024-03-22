@@ -10,26 +10,30 @@ int main(){
     while( N != 0 ){
         existSol = false;
 
-        int j_copy, i_copy, aux;
-        for(int j{01234}; j <= 98765 / N; j++){
+        int j_copy, i_copy, tmp;
+        for(int j{1234}; j <= 98765 / N; j++){
             alreadyUsed.reset();
             j_copy = j;
             i_copy = N * j_copy;
             while( i_copy ){
-                aux = i_copy % 10;
+                tmp = i_copy % 10;
                 i_copy = i_copy / 10;
-                alreadyUsed.set(aux);
+                alreadyUsed.set(tmp);
             }
 
             while( j_copy ){
-                aux = j_copy % 10;
+                tmp = j_copy % 10;
                 j_copy = j_copy / 10;
-                alreadyUsed.set(aux);
+                alreadyUsed.set(tmp);
             }
+            
+            // 0-index first digit
+            if( j <= 9999 ) alreadyUsed.set(0);
+            if( N * j <= 9999 ) alreadyUsed.set(0);
 
             if( alreadyUsed == mustBe ){
                 existSol = true;
-                printf("%d / %d = %d\n", j * N, j, N);
+                printf("%05d / %05d = %d\n", j * N, j, N);
             }
         }
 
