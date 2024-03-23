@@ -11,7 +11,7 @@ int main(){
 
     while( scanf("%d", &N), N ){
         if( !first ) printf("\n");
-        first = true;
+        first = false;
         abcde_store.clear(); fghij_store.clear();
         for(int fghij{1234}; fghij <= 98765 / N; fghij++){
             alreadyUsed.reset();
