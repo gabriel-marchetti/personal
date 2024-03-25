@@ -87,9 +87,9 @@ int main(){
     /**
      *  Testing function next_perm. 
      */
-    int array[] = {0, 1, 2, 3};
-    while( next_perm(array, 4, 0) )
-        printArray( array, 4 );
+    int array[] = {0, 1, 2, 3, 5, 6, 7, 8, 9, 10};
+    while( next_perm(array, 10, 0) )
+        printArray( array, 10 );
 
     return 0;
 }
