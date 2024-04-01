@@ -6,7 +6,26 @@ public class exercicio13 {
         Locale.setDefault(Locale.US);
         Scanner sc = new Scanner(System.in);
 
-        
+        float x, y;
+        System.out.printf("Valor de X: ");
+        x = sc.nextFloat();
+        System.out.printf("Valor de y: ");
+        y = sc.nextFloat();
+
+        if( x == 0 && y == 0 )
+            System.out.println("Origem");
+        else if( x == 0 )
+            System.out.println("Eixo Y");
+        else if( y == 0 )
+            System.out.println("Eixo X");
+        else if( x > 0 && y > 0 )
+            System.out.println("Q1");
+        else if( x < 0 && y > 0 )
+            System.out.println("Q2");
+        else if( x < 0 && y < 0 )
+            System.out.println("Q3");
+        else if( x > 0 && y < 0 )
+            System.out.println("Q4");
 
         sc.close();
     }
