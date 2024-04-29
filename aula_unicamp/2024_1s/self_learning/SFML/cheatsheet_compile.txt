@@ -1,0 +1,6 @@
+1) Compile the <name>.cpp file to object with
+    g++ -c <name>.cpp
+2) Use the g++ compiler again to create the executable
+    g++ <name>.o -o <name>.app -lsfml-graphics -lsfml-window -lsfml-system
+
+# Obs: if you used the network and audio sfml libs you need to add them both again.

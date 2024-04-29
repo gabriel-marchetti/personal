@@ -1,0 +1,5 @@
+print('Digite um número de ponto flutuante.')
+floatingNumber = float(input())
+print( 'O número é: ' + str(round(floatingNumber)) )
+print( 'O número com duas casas decimais: ' + str(round(floatingNumber, 2)) )
+print( 'Testando com argumento negativo para nDigits. ' + str(round(floatingNumber, -1)) )
