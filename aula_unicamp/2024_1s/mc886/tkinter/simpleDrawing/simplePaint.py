@@ -42,10 +42,10 @@ class PaintApp:
         self.brush_size_combobox.bind('<<ComboboxSelected>>',
                                       lambda event: self.select_size(int(self.brush_size_combobox.get())))
 
-        self.rectangle_button = ttk.Button(self.tool_frame,
-                                           text='Rectangle',
-                                           command=self.draw_square)
-        self.rectangle_button.pack(side=tk.TOP, padx=5, pady=5)
+        # self.rectangle_button = ttk.Button(self.tool_frame,
+        #                                    text='Rectangle',
+        #                                    command=self.draw_square)
+        # self.rectangle_button.pack(side=tk.TOP, padx=5, pady=5)
 
         self.clear_button = ttk.Button(self.tool_frame, text="Clear Canvas", command=self.clear_canvas)
         self.clear_button.pack(side=tk.TOP, padx=5, pady=5)
