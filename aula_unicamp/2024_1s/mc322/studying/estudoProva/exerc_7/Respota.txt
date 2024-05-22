@@ -1,0 +1,12 @@
+Clinica Veterinária.
+
+Precisamos criar métodos que interagem entre as classes. Vamos supor que foi escolhido
+algum método de guardar informações sobre os animais atendidos, veterinários e consultas
+realizadas.
+
+Para criar um método agendarNovaConsulta() eu utilizaria algum método estático para isso.
+Nesse sentido, veja que não precisaríamos instanciar um objeto de uma nova classe. Entretanto,
+poderiamos instanciar uma nova Consulta com os dados do Pet Atendido, horário e se já definido
+o veterinário que atenderia o animal. Além disso, para alterar os dados de alguma consulta 
+existente podemos criar um método público dentro da classe Consulta que possibilite a troca
+de dados. 

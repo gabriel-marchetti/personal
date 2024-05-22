@@ -1,0 +1,26 @@
+Vamos fazer a estrutura da classe Biblioteca que gerencia empréstimos de livros.
+
+Primeiro vamos supor que estamos tratando de uma rede de bibliotecas como, por 
+exemplo, a rede de bibliotecas da Unicamp. Desse modo, podemos ter várias instâncias
+de bibliotecas como a Biblioteca da Biologia, a Biblioteca da Física e assim por
+diante.
+
+Veja que nesse sentido podemos criar alguns atributos estáticos para gerenciamento
+de livros do acervo, isto é, veja que o acervo de livros da Unicamp é da Unicamp
+e não de uma biblioteca específica. Assim, podemos entender que todas as bibliotecas
+apontam para uma mesma referência de livros, mesmo que você precise ir para uma 
+biblioteca específica para retirar o livro. Desse modo, veja que um site que consulta
+se um livro está disponível dentre todas as bibliotecas da Unicamp tem gerenciamento
+mais simples. Pois basta que esse site tenha acesso ao banco de dados dos livros
+e basta modificá-los. 
+
+Assim como, podemos criar um atributo estático para guardar os usuários das bibliotecas
+desse modo, o usuário precisaria apenas ter registro dentro de uma das bibliotecas
+para conseguir ter acesso a todas.
+
+Veja aqui que métodos estáticos como emprestaLivro( Integer idLivro ), que atribue o estado de 
+emprestado para um livros, será essencial. Assim como devolveLivro( Integer idLivro ) também será.
+
+A escolha do encapsulamento pode ser justificada justamente para criar uma interface para
+as bibliotecárias, por exemplo. Desse modo, a bibliotecária não precisará se preocupar
+com o "under the hood" da aplicação.

@@ -1,0 +1,20 @@
+Classe Curso com Herança:
+
+    Primeiramente irei comentar como o conceito de herança é aplicado na estruturação
+das classes. No quesito da Super-Classe podemos pensar que a sua estruturação irá
+partir generalizar uma estrutura. Enquanto a Classe-Herdeira irá reutilizar as 
+partes definidas pela Super-Classem, além de que irá especificar um comportamento.
+    Desse modo, vamos aplicar tanto a generalização como a especificação para a 
+classe Curso e CursoOnline, respectivamente.
+    A Super-Classe curso poderá conter atributos gerais de cursos como horários de aulas,
+Alunos, Professores, atribuições didáticas. Nesse quêsito, veja que todos esses atributos
+devem ser acessados pela Classe-Herdeira. Métodos como localização, unidade e atributos
+que invoquem a ideia de geolocalização podem ser (geralmente) desconsideradas para cursos
+online, então a Classe-Herdeira não precisaria desses atributos então não precisariamos 
+adicionar elas como atributos protected. Entretando, para facilitar a implementação
+acredito que seria benéfico que Horários de aulas, Alunos, Professores e atribuições didáticas
+sejam acessíveis para a Classe-Herdada.
+    Questões de especificação da Classe-Herdade podem ser Site para acessar os vídeos, 
+Site para questões de estudo e entre outras coisas. Veja que aqui é há uma extensão natural
+do conceito de Herança, uma vez que cursos presenciais conservadores não utilizarão desses recursos
+mesmo que seu uso possa ser benéfico. 

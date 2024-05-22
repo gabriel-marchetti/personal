@@ -1,0 +1,19 @@
+Monitoramento de Saude:
+
+Primeiro vamos identificar quais atributos queremos que o MonitorDeSaudo tenha disponivel.
+Vamos dizer que esse monitor tem um clock de operação, de modo que a cada tick do clock
+serão computados novos dados do paciente. Vamos supor que temos a disposição batimentos
+cardíacos por minuto, pressão sanguínea, índice de oxigênio do sangue.
+
+Parte A) Veja que desejamos ter acesso aos dados vitais do paciente como batimentos 
+cardíacos por minutos, pressão sanguínea, índice de oxigênio do sangue. Esses atributos
+devem expostos a cada tick do clock do monitor.
+
+Parte B) Devemos implementar diversos métodos privados, para cada indicador vital
+haverá algum método que computará isso, vamos supor que cada um desses indicadores possui
+algum mecanismo específico que precisa ser ativado por algum comando para computar. Então,
+os batimentos cardíacos verificam uma variação de algum sensor, enquanto o indice de oxigênio
+precisa passar por outro tipo de sensor e a pressão sanguínea por outro. Assim, cada método
+computaBPM(), computaOxigenio(), computaPressao() não precisa ser exposto ao médico ou ao paciente.
+Além disso, podemos criar métodos que auxiliem esses processos, como ativaSensor() ou algo do gênero.
+No geral, todo o dispositivo eletrônico pode ser encapsulado para esconder a implementação!

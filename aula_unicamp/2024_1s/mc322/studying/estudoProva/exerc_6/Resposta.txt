@@ -1,0 +1,36 @@
+Implementação e Interface de uma Classe Conta Bancária:
+
+Em primeiro lugar, irei usar o conceito do encapsulamento para todos os atributos
+uma vez que isso tornará possível fazer verificações, além de não expor esses atributos
+para a interface e, portanto, só haverá acesso aos métodos pré-estipulados.
+
+Desse modo, podemos pensar que atributos como List<Client>, List<Dividas>, List<Acoes>
+e tudo mais que um banco pode ter como informação útil não terá acesso direto, além de que
+toda modificação a esses atributos poderá passar por uma verificação.
+
+Desse modo, métodos públicos que um banco pode ter são: depositoNaConta(), depositoOutraConta(),
+consultarCredito(), pedirNovoCartao(), comprarAcoes(), venderAcoes(). Vamos trabalhar nesses métodos
+por questão de simplicidade.
+
+depositoNaConta(): Será um método que com certeza irá ter visibilidade pública para um cliente,
+uma vez que esse irá executar essa ação. Veja que aqui podemos entrar fundo na questão de Implementação
+"under the hood". Primeiro, podemos pensar como o usuário poderá ter acesso a esse método, se for através
+de algum caixa eletrônico é necessário utilizar uma verificação que será exposta ao usuário. Entretanto,
+se o depósito for em dinheiro, de nada interessa ao cliente saber como as notas serão validadas, como 
+a máquina irá contar o dinheiro depositado. Assim, esses passos podem ser implementados como métodos
+privados e auxiliares.
+
+depositoOutraConta(): Além das questões explicada em depositoNaConta() aqui também precisamos verificar
+o acesso aos dados da outra conta e garantir como esse dinheiro irá chegar na outra conta. Portanto,
+outro método que será escondido do cliente.
+
+consultarCredito(): Um método, que excluindo validação, não apresentará muitos métodos auxiliares.
+
+pedirNovoCartao(): Aqui haverá a questão de notificação do Correio, de notificar a produtora de cartões e etc.
+Todos esses detalhes podem ser escodidos do usuário e, portanto, serão métodos auxiliares privados.
+
+comprarAcoes(): Esse método precisa ter acesso a alguma Interface dentro de alguma bolsa, novamente
+de pouco interessa o usuário saber os protocolos para comprar uma ação. Portanto, essas questões
+podem ser automatizadas.
+
+venderAcoes(): Mesma coisa...

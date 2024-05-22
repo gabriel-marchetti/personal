@@ -1,0 +1,22 @@
+Controle de Acesso a Edifícios.
+
+Vamos supor que estamos tratando de um banco para simplicar nossa Analogia a um 
+sistema de controle de acessos mais geral. Portanto, dentro desse banco haverão
+Clientes, FuncionáriosEscritório, Gerentes, FuncionáriosLimpeza, FuncionáriosTransporte.
+Aqui não nos importamos muito como serão implementadas essas classes.
+
+Nesse sentido, veja que cada funcionário terá uma hierarquia de acesso. Por exemplo,
+um Cliente poderá ter acesso as áreas como caixa eletrônicos, atendentes, banheiros e por ai vai.
+Contudo, não precisaremos de uma chave de acesso dentre essas áreas. Contudo um FuncionáriosEscritório
+terá que ter acesso aos arquivos e portanto precisará de uma chave de acesso para controle. Assim como
+FuncionáriosLimpeza precisam ter acesso à dispensa de produtos de Limpeza e os FuncionáriosTransporte
+terão que ter acesso à garagem. Enquanto o Gerente possui acesso a todas as áreas.
+
+Nesse sentido, vamos supor que o SistemaDeControleDeAcesso possua uma interface para cada uma das 
+áreas indicadas.
+
+A) os métodos públicos para SistemaDeControleDeAcesso devem ser justamente os métodos que possibilitem
+acesso as áreas específicas. Por Exemplo, entraGaragem(), entraDispensa() e por ai vai.
+
+B) Métodos privados podem ser justamente os métodos de validação de uma chave de cada funcionário.
+Assim como métodos de registro de acesso a cada área.

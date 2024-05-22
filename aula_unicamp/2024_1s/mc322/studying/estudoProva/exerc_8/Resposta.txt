@@ -1,0 +1,23 @@
+Sistemas de Carro de Aplicativo.
+
+Minha resposta irá se basear em funcionalidade já conhecidas do aplicativo Uber.
+
+Parte A) Assumindo que a classe Carro tenha composição de atributos com Passageiro
+e Motorista. Além disso, podemos supor que dada uma requisição de viagem dentro 
+do aplicativo, solicitamos a adesão do Passageiro para a classe Carro. 
+Dada essas condições, métodos como getMotorista(), getPassageiro() são métodos
+que são benéficos tanto para o Motorista, quanto para o Passageiro. Além disso, 
+no sistema de controle poderemos ver que o alocamento do cliente torna uma preocupação
+a menos, uma vez que esse cliente não necessita mais do serviço. Métodos de segurança
+como getPlacaDoCarro(), getDocumentoMotorista(), getDocumentoPassageiro() podem ser 
+igualmente benéficos tanto para Motorista quanto passageiro. Veja que essa interface
+já tornaria a viagem eficiente. Uma vez que o usuário sabendo a placa, então ela
+conseguirá confirmar o seu Motorista. Outros métodos que podem ser usados são
+estimativaTempoViagem(), novasRotas() e etc...
+
+Parte B) Métodos que podem ser privados e ,portanto, não serem expostos ao Motorista 
+e ao Passageiro são justamente métodos de controle. checarPassageirosSemCarro(),
+checarMotoristasDisponiveis(), carrosDisponiveisMotorista(), definirMotoristaPassageiro(). 
+Veja que esses métodos privados apoiam completamente os métodos públicos, uma vez que
+a funcionalidade do aplicativo só pode ocorrer se houver correspondência entre Motorista,
+Passageiro e Carro. Dada essa correspondência basta o Motorista dirigir com o Carro até o Passageiro.
