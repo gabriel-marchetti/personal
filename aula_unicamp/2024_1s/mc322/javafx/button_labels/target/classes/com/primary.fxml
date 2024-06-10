@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button fx:id="buttonHelloWorld_button" layoutX="460.0" layoutY="295.0" mnemonicParsing="false" onAction="#buttonHelloWorld_action" text="Ola Mundo" />
+      <Label fx:id="labelMessage" alignment="TOP_CENTER" layoutX="144.0" layoutY="147.0" prefHeight="16.0" prefWidth="313.0" textAlignment="CENTER" textFill="RED">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtNome" layoutX="185.0" layoutY="258.0" prefHeight="24.0" prefWidth="363.0" />
+      <Label fx:id="labelTypeName" layoutX="52.0" layoutY="262.0" prefHeight="16.0" prefWidth="125.0" text="Digitar um nome:" />
+   </children>
+</Pane>

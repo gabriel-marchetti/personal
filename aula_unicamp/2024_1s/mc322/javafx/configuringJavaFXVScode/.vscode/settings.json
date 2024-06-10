@@ -1,0 +1,21 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "/home/gabriel/Programs/javafx-sdk-22.0.1/lib/javafx.controls.jar",
+        "/home/gabriel/Programs/javafx-sdk-22.0.1/lib/javafx.fxml.jar",
+        "/home/gabriel/Programs/javafx-sdk-22.0.1/lib/javafx.media.jar",
+        "/home/gabriel/Programs/javafx-sdk-22.0.1/lib/javafx.web.jar",
+        "/home/gabriel/Programs/javafx-sdk-22.0.1/lib/javafx-swt.jar",
+        "/home/gabriel/Programs/javafx-sdk-22.0.1/lib/javafx.base.jar",
+        "/home/gabriel/Programs/javafx-sdk-22.0.1/lib/javafx.graphics.jar",
+        "/home/gabriel/Programs/javafx-sdk-22.0.1/lib/javafx.swing.jar",
+        "/home/gabriel/Programs/javafx-sdk-17.0.11/lib/javafx.controls.jar",
+        "/home/gabriel/Programs/javafx-sdk-17.0.11/lib/javafx.fxml.jar",
+        "/home/gabriel/Programs/javafx-sdk-17.0.11/lib/javafx.media.jar",
+        "/home/gabriel/Programs/javafx-sdk-17.0.11/lib/javafx.web.jar",
+        "/home/gabriel/Programs/javafx-sdk-17.0.11/lib/javafx-swt.jar",
+        "/home/gabriel/Programs/javafx-sdk-17.0.11/lib/javafx.base.jar",
+        "/home/gabriel/Programs/javafx-sdk-17.0.11/lib/javafx.graphics.jar",
+        "/home/gabriel/Programs/javafx-sdk-17.0.11/lib/javafx.swing.jar"
+    ]
+}
