@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -16,10 +18,18 @@ public class PrimaryController implements Initializable{
     @FXML
     private ComboBox<Categoria> cbCategorias;
     private List<Categoria> categorias = new ArrayList<>();
+    private ObservableList<Categoria> obsCategoria;
 
     @Override
     public void initialize( URL url, ResourceBundle rb){
         carregarCategorias();
+    }
+
+    @FXML
+    private void pegarSelecionado(){
+        Categoria categoria = cbCategorias.getSelectionModel().getSelectedItem();
+
+        System.out.println("ID: " + categoria.getId() + " --- " + "NOME: " + categoria.getNome());
     }
 
     public void carregarCategorias(  ){
@@ -33,6 +43,9 @@ public class PrimaryController implements Initializable{
         categorias.add(categoria3);
         categorias.add(categoria4);
 
-        cbCategorias.setItems(categoria1);
+        // Transformando em Observable List.
+        obsCategoria = FXCollections.observableArrayList(categorias);
+
+        cbCategorias.setItems(obsCategoria);
     }
 }
